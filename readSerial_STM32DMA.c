@@ -5,6 +5,7 @@
 //DMA開始コマンド
 //以下の1行はループ処理が始まる前に入れてください
 //基本的には以下のようにUSER CODE BEGIN 2とUSER CODE END 2の間に入れると良いでしょう
+//場所を間違えるとCubeMxの設定変更時に消えてしまいます。
 
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_DMA(&huart2,serialData,DATANUM);
@@ -12,6 +13,8 @@
 
 //以下コードはcubeMxの吐き出したmain.cの/* USER CODE BEGIN 0 */と/* USER CODE END 0 */の間あるいは、別のファイルに入れる必要があります。
 //場所を間違えるとCubeMxの設定変更時に消えてしまいます。
+
+
 //未読データ数確認関数
 //返り値は未読データ数
 int readDataNum(){//受信済みデータ数確認
