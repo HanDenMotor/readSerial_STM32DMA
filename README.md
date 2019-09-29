@@ -1,0 +1,2 @@
+# readSerial_STM32DMA
+STM32のUARTをDMAで受信しArudinoのSerialライブラリのように使うやつ
