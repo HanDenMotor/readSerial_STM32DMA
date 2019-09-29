@@ -1,39 +1,40 @@
-//STM32‚ÌUART‚ğDMA‚ÅóM‚µArudino‚ÌSerialƒ‰ƒCƒuƒ‰ƒŠ‚Ì‚æ‚¤‚Ég‚¤‚â‚Â
+//STM32ã®UARTã‚’DMAã§å—ä¿¡ã—Arudinoã®Serialãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®ã‚ˆã†ã«ä½¿ã†ã‚„ã¤
 
-//–{ƒTƒ“ƒvƒ‹ƒR[ƒh‚ÍUART2‚Åì¬‚µ‚Ä‚¢‚é‚½‚ß•Ê‚Ì”Ô†‚ÌUART‚ğg‚¤ê‡‚Í“KUART‚Ìƒnƒ“ƒhƒ‰‚Ì”Ô†‚ğ•ÏX‚µ‚Ä‚­‚¾‚³‚¢
+//æœ¬ã‚µãƒ³ãƒ—ãƒ«ã‚³ãƒ¼ãƒ‰ã¯UART2ã§ä½œæˆã—ã¦ã„ã‚‹ãŸã‚åˆ¥ã®ç•ªå·ã®UARTã‚’ä½¿ã†å ´åˆã¯é©æ™‚UARTã®ãƒãƒ³ãƒ‰ãƒ©ã®ç•ªå·ã‚’å¤‰æ›´ã—ã¦ãã ã•ã„
 
-//DMAŠJnƒRƒ}ƒ“ƒh
-//ˆÈ‰º‚Ì1s‚Íƒ‹[ƒvˆ—‚ªn‚Ü‚é‘O‚É“ü‚ê‚Ä‚­‚¾‚³‚¢
-//Šî–{“I‚É‚ÍˆÈ‰º‚Ì‚æ‚¤‚ÉUSER CODE BEGIN 2‚ÆUSER CODE END 2‚ÌŠÔ‚É“ü‚ê‚é‚Æ—Ç‚¢‚Å‚µ‚å‚¤
+//DMAé–‹å§‹ã‚³ãƒãƒ³ãƒ‰
+//ä»¥ä¸‹ã®1è¡Œã¯ãƒ«ãƒ¼ãƒ—å‡¦ç†ãŒå§‹ã¾ã‚‹å‰ã«å…¥ã‚Œã¦ãã ã•ã„
+//åŸºæœ¬çš„ã«ã¯ä»¥ä¸‹ã®ã‚ˆã†ã«USER CODE BEGIN 2ã¨USER CODE END 2ã®é–“ã«å…¥ã‚Œã‚‹ã¨è‰¯ã„ã§ã—ã‚‡ã†
 
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_DMA(&huart2,serialData,DATANUM);
   /* USER CODE END 2 */
 
+//ä»¥ä¸‹ã‚³ãƒ¼ãƒ‰ã¯cubeMxã®åãå‡ºã—ãŸmain.cã®/* USER CODE BEGIN 0 */ã¨/* USER CODE END 0 */ã®é–“ã‚ã‚‹ã„ã¯ã€åˆ¥ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«å…¥ã‚Œã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+//å ´æ‰€ã‚’é–“é•ãˆã‚‹ã¨CubeMxã®è¨­å®šå¤‰æ›´æ™‚ã«æ¶ˆãˆã¦ã—ã¾ã„ã¾ã™ã€‚
+//æœªèª­ãƒ‡ãƒ¼ã‚¿æ•°ç¢ºèªé–¢æ•°
+//è¿”ã‚Šå€¤ã¯æœªèª­ãƒ‡ãƒ¼ã‚¿æ•°
+int readDataNum(){//å—ä¿¡æ¸ˆã¿ãƒ‡ãƒ¼ã‚¿æ•°ç¢ºèª
+	int index = huart2.hdmarx->Instance->NDTR; //indexå–å¾—
 
-//–¢“Çƒf[ƒ^”Šm”FŠÖ”
-//•Ô‚è’l‚Í–¢“Çƒf[ƒ^”
-int readDataNum(){//óMÏ‚İƒf[ƒ^”Šm”F
-	int index = huart2.hdmarx->Instance->NDTR; //indexæ“¾
+	index = DATANUM - index;//å—ä¿¡ãƒ‡ãƒ¼ã‚¿ã®å…ˆé ­ä½ç½®
 
-	index = DATANUM - index;//óMƒf[ƒ^‚Ìæ“ªˆÊ’u
-
-	int remainData = index - indexRead;//“Ç‚İ‚ñ‚Å‚¢‚È‚¢ƒf[ƒ^‚Ì”
+	int remainData = index - indexRead;//èª­ã¿è¾¼ã‚“ã§ã„ãªã„ãƒ‡ãƒ¼ã‚¿ã®æ•°
 	if(remainData < 0) remainData += DATANUM;
 	return remainData;
 }
 
 
-//óMƒf[ƒ^1byteóMŠÖ”
-//Às‚²‚Æ‚ÉŒÃ‚¢ƒf[ƒ^‚©‚ç“Ç‚İ‚¾‚³‚ê‚é
-//•Ô‚è’l‚ÍóMƒf[ƒ^
-uint8_t readSerial(){//ƒf[ƒ^óM
+//å—ä¿¡ãƒ‡ãƒ¼ã‚¿1byteå—ä¿¡é–¢æ•°
+//å®Ÿè¡Œã”ã¨ã«å¤ã„ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰èª­ã¿ã ã•ã‚Œã‚‹
+//è¿”ã‚Šå€¤ã¯å—ä¿¡ãƒ‡ãƒ¼ã‚¿
+uint8_t readSerial(){//ãƒ‡ãƒ¼ã‚¿å—ä¿¡
 	uint8_t readData = 0;
 	
-	int index = huart2.hdmarx->Instance->NDTR; //indexæ“¾
+	int index = huart2.hdmarx->Instance->NDTR; //indexå–å¾—
 	index = DATANUM - index;
 
-	int remainData = index - indexRead;//“Ç‚İ‚ñ‚Å‚¢‚È‚¢ƒf[ƒ^‚Ì”
+	int remainData = index - indexRead;//èª­ã¿è¾¼ã‚“ã§ã„ãªã„ãƒ‡ãƒ¼ã‚¿ã®æ•°
 	if(remainData < 0) remainData += DATANUM;
 
 	if(remainData > 0){
