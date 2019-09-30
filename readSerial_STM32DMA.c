@@ -2,6 +2,16 @@
 
 //本サンプルコードはUART2で作成しているため別の番号のUARTを使う場合は適時UARTのハンドラの番号を変更してください
 
+//バッファー宣言
+//バッファの宣言はDMA開始コマンドの前に入れてください
+//本来は変数宣言箇所で宣言すべきですが、他ファイルでデータ読み取りを行う場合を考慮し
+///* USER CODE BEGIN Includes */と/* USER CODE END Includes */内のincludeファイル呼び出し前が良いでしょう
+/* USER CODE BEGIN Includes */
+#define DATANUM 100
+uint8_t serialData[DATANUM] = {};
+//#include "***.c"
+/* USER CODE END Includes */
+
 //DMA開始コマンド
 //以下の1行はループ処理が始まる前に入れてください
 //基本的には以下のようにUSER CODE BEGIN 2とUSER CODE END 2の間に入れると良いでしょう
